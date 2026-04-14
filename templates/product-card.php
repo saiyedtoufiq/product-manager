@@ -17,7 +17,7 @@
                 <img src="<?php echo PM_PLUGIN_URL . 'assets/images/placeholder.jpg'; ?>" alt="no image" class="product-img">
             <?php endif; ?>
             <div class="add-to-cart-overlay">
-                <button class="btn btn-dark rounded-0 py-2 text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.1em;">Add to Cart</button>
+                <button type="button" class="btn btn-dark rounded-0 py-2 text-uppercase fw-bold add-to-cart-btn" data-product_id="<?php echo get_the_ID(); ?>" style="font-size: 0.7rem; letter-spacing: 0.1em;">Add to Cart</button>
             </div>
         </div>
         <div class="text-center">

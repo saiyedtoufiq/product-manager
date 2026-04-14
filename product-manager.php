@@ -37,6 +37,7 @@ class Product_Manager {
         require_once PM_PLUGIN_DIR . 'includes/post-type-init.php';
         require_once PM_PLUGIN_DIR . 'includes/shortcodes-init.php';
         require_once PM_PLUGIN_DIR . 'includes/ajax-handler.php';
+        require_once PM_PLUGIN_DIR . 'includes/product-cart.php';
     }
 
     private function init_hooks() {
@@ -44,6 +45,10 @@ class Product_Manager {
         add_action('wp_enqueue_scripts', array($this, 'mp_enqueue_scripts'));
         add_action('wp_ajax_filter_products', ['Product_List', 'filter_products']);
         add_action('wp_ajax_nopriv_filter_products', ['Product_List', 'filter_products']);
+        add_action('wp_ajax_add_to_cart', ['PM_Cart', 'add_to_cart']);
+        add_action('wp_ajax_nopriv_add_to_cart', ['PM_Cart', 'add_to_cart']);
+        add_action('wp_ajax_remove_from_cart', ['PM_Cart', 'remove_from_cart']);
+        add_action('wp_ajax_nopriv_remove_from_cart', ['PM_Cart', 'remove_from_cart']);
     }
 
     public function init() {
@@ -52,6 +57,9 @@ class Product_Manager {
 
         // shortcodes
         PM_Product_List::init();
+
+        // cart
+        PM_Cart::init();
     }
 
     public function mp_enqueue_scripts() {
@@ -62,6 +70,7 @@ class Product_Manager {
         // jquery and custom scripts
         wp_enqueue_script('jquery');
         wp_enqueue_script('pm-jquery-ui', "https://code.jquery.com/ui/1.13.2/jquery-ui.js", array('jquery'), null, true);
+        wp_enqueue_script('pm-bootstrap', "https://cdn.jsdelivr.net/npm/sweetalert2@11", array('jquery'), null, true);
         wp_enqueue_script('pm-scripts', PM_PLUGIN_URL . 'assets/js/scripts.js', array('jquery'), null, true);
         wp_localize_script('pm-scripts', 'wp_ajax_object', [
             'ajax_url' => admin_url('admin-ajax.php'),

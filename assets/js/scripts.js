@@ -13,17 +13,20 @@ jQuery(function($) {
         // cartCount:   parseInt(wpprod_vars.cart_count) || 0,
     };
 
+    window.Swal = Swal;
+    window.Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
     const $grid       = $('#product-grid');
     const $pagination = $('#post-pagination');
-    const $count      = $('#product-results-count');
-    const $cartCount  = $('#product-cart-count');
-    const $toast      = $('#product-toast');
-    const $cartDrawer = $('#product-cart-drawer');
-    const $cartItems  = $('#product-cart-items');
-    const $cartFooter = $('#product-cart-footer');
-    const $cartOverlay= $('#product-cart-overlay');
-    const $cartTotal  = $('#product-cart-total-val');
-    const $sidebar    = $('#product-sidebar');
 
     $("#price-range").slider({
         range: true,
@@ -136,4 +139,56 @@ jQuery(function($) {
     }
 
     fetchProducts();
+
+    $(document).on('click', '.add-to-cart-btn', function() {
+        const productId = $(this).data('product_id');
+        const $btn = $(this);
+
+        $.ajax({
+            type: "POST",
+            url: wp_ajax_object.ajax_url,
+            data: {
+                action: "add_to_cart",
+                nonce: wp_ajax_object.nonce,
+                product_id: productId,
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.data.message,
+                    });
+                } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: response.data.message,
+                    });
+                }
+            },
+        });
+    });
+
+    $(document).on('click', '.remove-cart-item', function() {
+        const productId = $(this).data('product_id');
+        $.ajax({
+            type: "POST",
+            url: wp_ajax_object.ajax_url,
+            data: {
+                action: "remove_from_cart",
+                nonce: wp_ajax_object.nonce,
+                product_id: productId,
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.data.message,
+                    });
+                }
+            }
+        });
+
+    });
 });
