@@ -36,11 +36,14 @@ class Product_Manager {
     private function load_dependencies() {
         require_once PM_PLUGIN_DIR . 'includes/post-type-init.php';
         require_once PM_PLUGIN_DIR . 'includes/shortcodes-init.php';
+        require_once PM_PLUGIN_DIR . 'includes/ajax-handler.php';
     }
 
     private function init_hooks() {
         add_action('init', array($this, 'init'));
         add_action('wp_enqueue_scripts', array($this, 'mp_enqueue_scripts'));
+        add_action('wp_ajax_filter_products', ['Product_List', 'filter_products']);
+        add_action('wp_ajax_nopriv_filter_products', ['Product_List', 'filter_products']);
     }
 
     public function init() {
@@ -60,6 +63,10 @@ class Product_Manager {
         wp_enqueue_script('jquery');
         wp_enqueue_script('pm-jquery-ui', "https://code.jquery.com/ui/1.13.2/jquery-ui.js", array('jquery'), null, true);
         wp_enqueue_script('pm-scripts', PM_PLUGIN_URL . 'assets/js/scripts.js', array('jquery'), null, true);
+        wp_localize_script('pm-scripts', 'wp_ajax_object', [
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('wp_ajax_nonce')
+        ]);
     }
 }
 

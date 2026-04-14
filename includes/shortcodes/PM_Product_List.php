@@ -71,11 +71,11 @@ class PM_Product_List {
                         <div class="mb-5">
                             <span class="filter-label">Stock:</span>
                             <div class="form-check mb-2">
-                                <input class="form-check-input rounded-0 border-dark" type="checkbox" id="filter-instock">
+                                <input class="form-check-input rounded-0 border-dark" type="checkbox" id="filter-instock" checked>
                                 <label class="form-check-label small text-uppercase fw-bold" style="font-size: 0.65rem;" for="filter-instock">In Stock</label>
                             </div>
                             <div class="form-check mb-2">
-                                <input class="form-check-input rounded-0 border-dark" type="checkbox" id="filter-outstock">
+                                <input class="form-check-input rounded-0 border-dark" type="checkbox" id="filter-outstock" checked>
                                 <label class="form-check-label small text-uppercase fw-bold" style="font-size: 0.65rem;" for="filter-outstock">Out of Stock</label>
                             </div>
                         </div>
@@ -101,15 +101,7 @@ class PM_Product_List {
                         </div>
 
                         <!-- Pagination -->
-                        <div class="mt-5 text-center">
-                            <div class="custom-pagination">
-                                <button class="page-btn">Prev</button>
-                                <button class="page-btn active">1</button>
-                                <button class="page-btn text-muted">2</button>
-                                <button class="page-btn text-muted">3</button>
-                                <button class="page-btn">Next</button>
-                            </div>
-                            <p class="mt-4 text-muted small text-uppercase italic tracking-widest" style="font-size: 0.6rem;">Pagination should show here</p>
+                        <div id="post-pagination" class="mt-5 text-center">
                         </div>
                     </div>
 

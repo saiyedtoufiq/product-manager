@@ -59,14 +59,14 @@ class PM_Product {
                 </p>
                 <p>
                     <label for="product_rating"><?php _e('Rating', 'wp-product-manager'); ?></label>
-                    <input type="range" id="product_rating" name="product_rating" min="0" max="5" step="0.1" value="<?php echo esc_attr($rating); ?>" />
+                    <input type="range" id="product_rating" name="product_rating" min="0" max="5" step="1" value="<?php echo esc_attr($rating); ?>" />
                     <span class="rating-value"><?php echo esc_attr($rating); ?></span>
                 </p>
                 <p>
                     <label for="product_stock_status"><?php _e('Stock Status', 'wp-product-manager'); ?></label>
-                    <input type="radio" id="stock_in" name="product_stock_status" value="1" <?php checked($stock_status, '1'); ?> />
+                    <input type="radio" id="stock_in" name="product_stock_status" value="in_stock" <?php checked($stock_status, 'in_stock'); ?> />
                     <label for="stock_in"><?php _e('In Stock', 'wp-product-manager'); ?></label>
-                    <input type="radio" id="stock_out" name="product_stock_status" value="0" <?php checked($stock_status, '0'); ?> />
+                    <input type="radio" id="stock_out" name="product_stock_status" value="out_of_stock" <?php checked($stock_status, 'out_of_stock'); ?> />
                     <label for="stock_out"><?php _e('Out of Stock', 'wp-product-manager'); ?></label>
                 </p>
             </div>

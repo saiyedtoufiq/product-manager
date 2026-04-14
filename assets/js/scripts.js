@@ -1,101 +1,139 @@
-let selectedMinRating = 0;
-
-const products = [
-    { id: 1, title: "product title 01", price: 120.00, rating: 5, inStock: true, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500" },
-    { id: 2, title: "product title 02", price: 250.00, rating: 4, inStock: true, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" },
-    { id: 3, title: "product title 03", price: 450.00, rating: 5, inStock: false, img: "https://images.unsplash.com/photo-1505843490701-5be5d0b19d58?w=500" },
-    { id: 4, title: "product title 04", price: 89.99, rating: 3, inStock: true, img: "https://images.unsplash.com/photo-1589492477829-5e65395b66cc?w=500" },
-    { id: 5, title: "product title 05", price: 175.00, rating: 4, inStock: true, img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500" },
-    { id: 6, title: "product title 06", price: 140.00, rating: 5, inStock: false, img: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=500" }
-];
 
 jQuery(function($) {
+
+    const state = {
+        paged:       1,
+        keyword:     '',
+        minPrice:    10,
+        maxPrice:    100000,
+        ratings:     0,
+        inStock:     true,
+        outOfStock:  true,
+        isLoading:   false,
+        // cartCount:   parseInt(wpprod_vars.cart_count) || 0,
+    };
+
+    const $grid       = $('#product-grid');
+    const $pagination = $('#post-pagination');
+    const $count      = $('#product-results-count');
+    const $cartCount  = $('#product-cart-count');
+    const $toast      = $('#product-toast');
+    const $cartDrawer = $('#product-cart-drawer');
+    const $cartItems  = $('#product-cart-items');
+    const $cartFooter = $('#product-cart-footer');
+    const $cartOverlay= $('#product-cart-overlay');
+    const $cartTotal  = $('#product-cart-total-val');
+    const $sidebar    = $('#product-sidebar');
+
     $("#price-range").slider({
         range: true,
-        min: 10,
-        max: 100000,
-        values: [10, 100000],
+        min: state.minPrice,
+        max: state.maxPrice,
+        values: [state.minPrice, state.maxPrice],
         slide: function(event, ui) {
             $("#price-min").text("₹" + ui.values[0]).attr("data-min_price", ui.values[0]);
             $("#price-max").text("₹" + ui.values[1]).attr("data-max_price", ui.values[1]);
         }
     });
 
+    $('#apply-filters, #search-btn').on('click', function(e) {
+        state.paged = 1;
+        switch ($(this).attr('id')) {
+            case 'search-btn':
+                state.keyword = $('#search-input').val();
+                break;
+            case 'apply-filters':
+                state.minPrice = $("#price-range").slider("values", 0);
+                state.maxPrice = $("#price-range").slider("values", 1);
+                state.inStock = $('#filter-instock').is(':checked');
+                state.outOfStock = $('#filter-outstock').is(':checked');
+                break;
+        }
+        fetchProducts();
+    });
+
     // Rating bar selection
     $(".rating-container").on("click", function() {
         $(".rating-container").removeClass("active");
         $(this).addClass("active");
-        selectedMinRating = parseInt($(this).data("stars"));
-    });
-
-    function renderProducts(filterData = null) {
-        const grid = $('#product-grid');
-        grid.empty();
-
-        let filtered = products;
-
-        if (filterData) {
-            filtered = products.filter(p => {
-                const priceMatch = p.price >= filterData.minPrice && p.price <= filterData.maxPrice;
-                const ratingMatch = p.rating >= filterData.minRating;
-                const stockMatch = (p.inStock && filterData.inStock) || (!p.inStock && filterData.outOfStock);
-                const searchMatch = !filterData.search || p.title.toLowerCase().includes(filterData.search.toLowerCase());
-                return priceMatch && ratingMatch && stockMatch && searchMatch;
-            });
-        }
-
-        if (filtered.length === 0) {
-            grid.append('<div class="col-12 py-5 text-center text-muted text-uppercase small tracking-widest">No matching products found.</div>');
-            return;
-        }
-
-        filtered.forEach(p => {
-            const card = `
-                <div class="col-md-6 col-lg-4">
-                    <div class="product-card">
-                        <div class="product-img-wrapper">
-                            ${!p.inStock ? '<div class="out-of-stock-tag">Out of Stock</div>' : ''}
-                            <img src="${p.img}" alt="${p.title}" class="product-img">
-                            <div class="add-to-cart-overlay">
-                                <button onclick="addToCart('${p.title}')" class="btn-add-cart">Add to Cart</button>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <h5 class="small fw-bold text-uppercase mb-1 lowercase">${p.title}</h5>
-                            <p class="text-muted italic small mb-2">$${p.price.toFixed(2)}</p>
-                            <div class="text-secondary" style="font-size: 0.6rem;">
-                                ${'★'.repeat(p.rating)}${'☆'.repeat(5-p.rating)}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            grid.append(card);
-        });
-    }
-
-    $('#apply-filters, #search-btn').on('click', function() {
-        renderProducts({
-            minPrice: $("#price-range").slider("values", 0),
-            maxPrice: $("#price-range").slider("values", 1),
-            minRating: selectedMinRating,
-            inStock: $('#filter-instock').is(':checked'),
-            outOfStock: $('#filter-outstock').is(':checked'),
-            search: $('#search-input').val()
-        });
+        state.paged = 1;
+        state.ratings = parseInt($(this).data("stars"));
     });
 
     $('#reset-filters').on('click', function() {
-        $("#price-range").slider("values", [0, 500]);
-        $("#price-min").text("$0");
-        $("#price-max").text("$500");
+        state.paged = 1;
+        $("#price-range").slider("values", [10, 100000]);
+        $("#price-min").text("₹10");
+        $("#price-max").text("₹100000");
         $(".rating-container").removeClass("active");
-        selectedMinRating = 0;
         $('#filter-instock, #filter-outstock').prop('checked', true);
         $('#search-input').val('');
-        renderProducts();
+        state.ratings = 0;
+        state.inStock = true;
+        state.outOfStock = true;
+        fetchProducts();
     });
 
-    renderProducts();
+    // Pagination
+    $(document).on('click', '.page-btn', function () {
+        if ($(this).hasClass('active') || $(this).hasClass('text-muted')) return;
+        const page = parseInt($(this).data('page'));
+        if (page) {
+            state.paged = page;
+            fetchProducts();
+            // Scroll to grid top
+            $('html, body').animate({ scrollTop: $grid.offset().top - 80 }, 300);
+        }
+    });
 
+
+    // Fetch Products
+    function fetchProducts() {
+        const data = {
+            action: "filter_products",
+            nonce: wp_ajax_object.nonce,
+            paged: state.paged,
+            keyword: state.keyword,
+            minPrice: state.minPrice,
+            maxPrice: state.maxPrice,
+            ratings: state.ratings,
+            inStock: state.inStock,
+            outOfStock: state.outOfStock,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: wp_ajax_object.ajax_url,
+            data: data,
+            dataType: "json",
+            success: function (response) {
+                $grid.css({ opacity: 0, transform: 'translateY(8px)', transition: 'none' });
+                $grid.html(response.html);
+
+                setTimeout(function () {
+                    $grid.css({ transition: 'opacity .3s ease, transform .3s ease', opacity: 1, transform: 'translateY(0)' });
+                }, 20);
+
+                renderPagination(response.current_page, response.total_pages);
+            },
+        });
+    }
+
+
+    function renderPagination(current, total) {
+        if (total <= 1) {
+            $pagination.html('');
+            return;
+        }
+        
+        let html = `<div class="custom-pagination">
+            <button class="page-btn ${current === 1 ? 'text-muted' : ''}" data-page="${current - 1}" >Prev</button>`;
+        for (let i = 1; i <= total; i++) {
+            html += `<button class="page-btn ${i === current ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        }
+        html += `<button class="page-btn ${current === total ? 'text-muted' : ''}" data-page="${current + 1}">Next</button></div>`;
+        $pagination.html(html);
+    }
+
+    fetchProducts();
 });
