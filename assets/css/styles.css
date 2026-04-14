@@ -1,0 +1,223 @@
+/* jQuery UI Slider Styling to match theme */
+.ui-widget.ui-widget-content {
+    border: none;
+    background: #f0f0f0;
+    height: 2px;
+}
+
+.ui-slider-range {
+    background: #000 !important;
+}
+
+.ui-state-default,
+.ui-widget-content .ui-state-default {
+    border: 2px solid #000 !important;
+    background: #fff !important;
+    border-radius: 0 !important;
+    width: 14px;
+    height: 14px;
+    top: -6px;
+    cursor: pointer;
+}
+
+
+/* Sidebar Styling */
+.filter-section-title {
+    font-size: 1.0rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.filter-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* Rating Bars */
+.rating-bar-bg {
+    height: 8px;
+    background: #f8f9fa;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.rating-bar-fill {
+    height: 100%;
+    background: #000;
+    transition: width 0.3s ease;
+}
+
+.rating-container.active .rating-bar-bg {
+    outline: 1px solid #000;
+    outline-offset: 2px;
+}
+
+/* Search Box */
+.search-container {
+    border-bottom: 1px solid #000;
+    display: flex;
+    align-items: baseline;
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    font-style: italic;
+    font-size: 0.875rem;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.btn-search {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: none;
+    background: none;
+}
+
+/* Product Cards */
+.product-card {
+    border: none;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.product-img-wrapper {
+    position: relative;
+    border: 1px solid #f8f9fa;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.product-img {
+    width: 100%;
+    filter: grayscale(100%);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product-card:hover .product-img {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+.add-to-cart-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .add-to-cart-overlay {
+    opacity: 1;
+}
+
+.btn-add-cart {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+
+.out-of-stock-tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #000;
+    color: #fff;
+    font-size: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+/* Pagination */
+.custom-pagination {
+    border: 1px solid #000;
+    display: inline-flex;
+    padding: 2px;
+}
+
+.page-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #000;
+}
+
+.page-btn.active {
+    background: #000;
+    color: #fff;
+}
+
+/* Toast */
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    z-index: 1050;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+#toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
