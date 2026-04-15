@@ -98,7 +98,7 @@ class PM_Product_List
                     <div class="d-md-flex justify-content-between align-items-end mb-5 border-bottom pb-3">
                         <h2 class="display-6 fw-light mb-md-0">Products</h2>
                         <form id="search-form" class="search-container col-md-5 col-12">
-                            <input type="text" id="search-input" placeholder="product name" class="search-input">
+                            <input type="text" id="search-input" placeholder="Search products..." class="search-input">
                             <button id="search-btn" class="btn-search">Search</button>
                         </form>
                     </div>

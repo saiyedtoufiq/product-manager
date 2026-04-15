@@ -52,24 +52,35 @@ class PM_Product {
         $rating = get_post_meta($post->ID, '_product_rating', true) ? get_post_meta($post->ID, '_product_rating', true) : 0;
         $stock_status = get_post_meta($post->ID, '_product_stock_status', true) ? get_post_meta($post->ID, '_product_stock_status', true) : 1;
         ?>
-            <div class="">
+            <div class="pm-meta-box-fields">
                 <p>
                     <label for="product_price"><?php _e('Price', 'wp-product-manager'); ?></label>
-                    <input type="text" id="product_price" name="product_price" value="<?php echo esc_attr($price); ?>" placeholder="Product price" />
+                    <input type="text" id="product_price" name="product_price" value="<?php echo esc_attr($price); ?>" placeholder="Product price" class="pm-input" />
                 </p>
                 <p>
                     <label for="product_rating"><?php _e('Rating', 'wp-product-manager'); ?></label>
-                    <input type="range" id="product_rating" name="product_rating" min="0" max="5" step="1" value="<?php echo esc_attr($rating); ?>" />
+                    <input type="range" id="product_rating" name="product_rating" min="0" max="5" step="1" value="<?php echo esc_attr($rating); ?>" class="pm-range-input" />
                     <span class="rating-value"><?php echo esc_attr($rating); ?></span>
                 </p>
                 <p>
                     <label for="product_stock_status"><?php _e('Stock Status', 'wp-product-manager'); ?></label>
-                    <input type="radio" id="stock_in" name="product_stock_status" value="in_stock" <?php checked($stock_status, 'in_stock'); ?> />
-                    <label for="stock_in"><?php _e('In Stock', 'wp-product-manager'); ?></label>
-                    <input type="radio" id="stock_out" name="product_stock_status" value="out_of_stock" <?php checked($stock_status, 'out_of_stock'); ?> />
-                    <label for="stock_out"><?php _e('Out of Stock', 'wp-product-manager'); ?></label>
+                    <div class="pm-radio-group">
+                        <input type="radio" id="stock_in" name="product_stock_status" value="in_stock" <?php checked($stock_status, 'in_stock'); ?> class="pm-radio" />
+                        <label for="stock_in"><?php _e('In Stock', 'wp-product-manager'); ?></label>
+                        <input type="radio" id="stock_out" name="product_stock_status" value="out_of_stock" <?php checked($stock_status, 'out_of_stock'); ?> class="pm-radio" />
+                        <label for="stock_out"><?php _e('Out of Stock', 'wp-product-manager'); ?></label>
+                    </div>
                 </p>
             </div>
+            <style>
+                .pm-meta-box-fields { padding: 10px; }
+                .pm-meta-box-fields p { margin-bottom: 15px; }
+                .pm-meta-box-fields label { display: block; margin-bottom: 5px; font-weight: bold; }
+                .pm-input, .pm-range-input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%; max-width: 300px; }
+                .pm-radio-group { margin-top: 5px; }
+                .pm-radio { margin-right: 5px; }
+                .rating-value { margin-left: 10px; font-weight: bold; }
+            </style>
 
             <script>
                 jQuery(document).ready(function($) {
