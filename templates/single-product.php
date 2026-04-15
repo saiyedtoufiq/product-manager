@@ -63,13 +63,22 @@ while (have_posts()) :
                     <?php echo $is_out_of_stock ? esc_html__('Out of Stock', 'wp-product-manager') : esc_html__('In Stock', 'wp-product-manager'); ?>
                 </p>
 
-                <button
-                    type="button"
-                    class="btn btn-dark rounded-0 py-2 px-4 text-uppercase fw-bold add-to-cart-btn"
-                    data-product_id="<?php echo esc_attr(get_the_ID()); ?>"
-                    <?php disabled($is_out_of_stock); ?>>
-                    <?php esc_html_e('Add to Cart', 'wp-product-manager'); ?>
-                </button>
+                <div class="pm-detail-cart-controls">
+                    <div class="pm-qty-selector" aria-label="<?php esc_attr_e('Quantity selector', 'wp-product-manager'); ?>">
+                        <button type="button" class="pm-qty-btn" data-qty-action="minus">-</button>
+                        <input type="number" class="pm-qty-input" min="1" value="1" />
+                        <button type="button" class="pm-qty-btn" data-qty-action="plus">+</button>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-dark rounded-0 py-2 px-4 text-uppercase fw-bold add-to-cart-btn btn-add-main"
+                        data-product_id="<?php echo esc_attr(get_the_ID()); ?>"
+                        data-qty-source=".pm-qty-input"
+                        <?php disabled($is_out_of_stock); ?>>
+                        <?php esc_html_e('Add to Cart', 'wp-product-manager'); ?>
+                    </button>
+                </div>
             </div>
         </div>
 

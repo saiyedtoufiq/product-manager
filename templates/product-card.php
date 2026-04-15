@@ -3,7 +3,8 @@
 
     $isStock = get_post_meta(get_the_ID(), '_product_stock_status', true);
     $price = get_post_meta(get_the_ID(), '_product_price', true);
-    $rating = get_post_meta(get_the_ID(), '_product_rating', true);
+    $rating = (int) get_post_meta(get_the_ID(), '_product_rating', true);
+    $rating = max(0, min(5, $rating));
 ?>
 <div class="col-md-6 col-lg-4">
     <div class="product-card">
@@ -17,15 +18,24 @@
                 <img src="<?php echo PM_PLUGIN_URL . 'assets/images/placeholder.jpg'; ?>" alt="no image" class="product-img">
             <?php endif; ?>
             <div class="add-to-cart-overlay">
-                <button type="button" class="btn btn-dark rounded-0 py-2 text-uppercase fw-bold add-to-cart-btn" data-product_id="<?php echo get_the_ID(); ?>" style="font-size: 0.7rem; letter-spacing: 0.1em;">Add to Cart</button>
+                <button
+                    type="button"
+                    class="btn btn-dark rounded-0 py-2 text-uppercase fw-bold add-to-cart-btn"
+                    data-product_id="<?php echo esc_attr(get_the_ID()); ?>"
+                    data-qty="1"
+                    <?php disabled($isStock === 'out_of_stock'); ?>
+                    style="font-size: 0.7rem; letter-spacing: 0.1em;"
+                >
+                    Add to Cart
+                </button>
             </div>
         </div>
         <div class="text-center">
-            <a class="btn btn-link" href="<?php the_permalink(); ?>">
-                <h5 class="small fw-bold text-uppercase mb-1 lowercase"><?php the_title(); ?></h5>
-            </a>
+            <h5 class="small fw-bold text-uppercase mb-1">
+                <a class="pm-product-title-link" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+            </h5>
             <p class="text-muted italic small mb-2">₹<?php echo number_format($price, 2); ?></p>
-            <div class="text-secondary" style="font-size: 0.6rem;">
+            <div class="pm-rating-stars" aria-label="<?php echo esc_attr($rating . ' out of 5 stars'); ?>">
                 <?php echo str_repeat('★', $rating) . str_repeat('☆', 5 - $rating); ?>
             </div>
         </div>

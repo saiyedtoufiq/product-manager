@@ -10,7 +10,16 @@ class Product_List {
         $keyword = isset($_POST['keyword']) ? sanitize_text_field($_POST['keyword']) : '';
         $min_price = isset($_POST['minPrice']) ? floatval($_POST['minPrice']) : 10;
         $max_price = isset($_POST['maxPrice']) ? floatval($_POST['maxPrice']) : 100000;
-        $rating = isset($_POST['ratings']) ? floatval($_POST['ratings']) : null;
+        $ratings = [];
+        if (isset($_POST['ratings'])) {
+            $raw_ratings = $_POST['ratings'];
+            if (!is_array($raw_ratings)) {
+                $raw_ratings = explode(',', (string) $raw_ratings);
+            }
+            $ratings = array_values(array_filter(array_map('intval', $raw_ratings), function ($value) {
+                return $value >= 1 && $value <= 5;
+            }));
+        }
         $in_stock = isset($_POST['inStock']) ? filter_var($_POST['inStock'], FILTER_VALIDATE_BOOLEAN) : true;
         $out_of_stock = isset($_POST['outOfStock']) ? filter_var($_POST['outOfStock'], FILTER_VALIDATE_BOOLEAN) : true;
         
@@ -25,15 +34,13 @@ class Product_List {
             );
         }
 
-        if (!empty($rating)) {
-            $rating_clause = array('relation' => 'AND');
-            $rating_clause[] = array(
+        if (!empty($ratings)) {
+            $meta_query[] = array(
                 'key' => '_product_rating',
-                'value' => $rating,
-                'type' => 'DECIMAL(10,2)',
-                'compare' => '='
+                'value' => $ratings,
+                'type' => 'NUMERIC',
+                'compare' => 'IN'
             );
-            $meta_query[] = $rating_clause;
         }
         if ($in_stock || $out_of_stock) {
             $stock_statuses = [];
@@ -100,22 +107,5 @@ class Product_List {
             'current_page' => $paged,
             'total_pages' => $query->max_num_pages
         ]);
-    }
-
-
-    function render_stars($rating) {
-        $full_stars = floor($rating);
-        $half_star = ($rating - $full_stars) >= 0.5 ? 1 : 0;
-        $empty_stars = 5 - $full_stars - $half_star;
-
-        $html = '<div class="pm-stars">';
-        for ($i = 0; $i < $full_stars; $i++) {
-            $html .= '<span class="star full">&#9733;</span>';
-        }
-        for ($i = 0; $i < $empty_stars; $i++) {
-            $html .= '<span class="star empty">&#9733;</span>';
-        }
-        $html .= '</div>';
-        return $html;
     }
 }

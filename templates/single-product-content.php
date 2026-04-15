@@ -56,7 +56,7 @@ $image_url = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'la
         <div class="col-12">
             <h2 class="h5 mb-3"><?php esc_html_e('Description', 'wp-product-manager'); ?></h2>
             <div class="product-content">
-                <?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                <?php echo $content; ?>
             </div>
         </div>
     </div>

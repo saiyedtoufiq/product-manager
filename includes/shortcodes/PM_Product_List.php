@@ -30,6 +30,7 @@ class PM_Product_List
 
                     <div class="mb-5">
                         <span class="filter-label">Rating:</span>
+                        <small class="text-muted d-block mb-2">You can select multiple ratings</small>
                         <div id="rating-filters">
                             <div class="rating-container mb-3 cursor-pointer" data-stars="5">
                                 <div class="d-flex justify-content-between mb-1" style="font-size: 0.6rem; font-weight: 800; text-transform: uppercase;">
@@ -65,7 +66,7 @@ class PM_Product_List
                             </div>
                             <div class="rating-container mb-3 cursor-pointer" data-stars="1">
                                 <div class="d-flex justify-content-between mb-1" style="font-size: 0.6rem; font-weight: 800; text-transform: uppercase;">
-                                    <span>1 Stars</span>
+                                    <span>1 Star</span>
                                 </div>
                                 <div class="rating-bar-bg">
                                     <div class="rating-bar-fill" style="width: 10%"></div>

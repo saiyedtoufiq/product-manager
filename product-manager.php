@@ -49,6 +49,8 @@ class Product_Manager {
         add_action('wp_ajax_nopriv_add_to_cart', ['PM_Cart', 'add_to_cart']);
         add_action('wp_ajax_remove_from_cart', ['PM_Cart', 'remove_from_cart']);
         add_action('wp_ajax_nopriv_remove_from_cart', ['PM_Cart', 'remove_from_cart']);
+        add_action('wp_ajax_get_cart', ['PM_Cart', 'get_cart']);
+        add_action('wp_ajax_nopriv_get_cart', ['PM_Cart', 'get_cart']);
     }
 
     public function init() {
