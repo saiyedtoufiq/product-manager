@@ -191,6 +191,11 @@ jQuery(function($) {
         if (!$grid.length) {
             return;
         }
+
+        const skeletonMinDuration = 300;
+        const requestStartedAt = Date.now();
+        renderProductSkeletons(6);
+
         $.ajax({
             type: 'POST',
             url: wp_ajax_object.ajax_url,
@@ -207,14 +212,38 @@ jQuery(function($) {
                 outOfStock: state.outOfStock
             },
             success: function(response) {
-                $grid.css({ opacity: 0, transform: 'translateY(8px)', transition: 'none' });
-                $grid.html(response.html);
+                const elapsed = Date.now() - requestStartedAt;
+                const waitFor = Math.max(0, skeletonMinDuration - elapsed);
+
                 setTimeout(function() {
-                    $grid.css({ transition: 'opacity .3s ease, transform .3s ease', opacity: 1, transform: 'translateY(0)' });
-                }, 20);
-                renderPagination(response.current_page, response.total_pages);
+                    $grid.css({ opacity: 0, transform: 'translateY(8px)', transition: 'none' });
+                    $grid.html(response.html);
+                    setTimeout(function() {
+                        $grid.css({ transition: 'opacity .3s ease, transform .3s ease', opacity: 1, transform: 'translateY(0)' });
+                    }, 200);
+                    renderPagination(response.current_page, response.total_pages);
+                }, waitFor);
             }
         });
+    }
+
+    function renderProductSkeletons(count) {
+        let html = '';
+        for (let i = 0; i < count; i++) {
+            html += ''
+                + '<div class="col-md-6 col-lg-4">'
+                + '  <div class="product-card pm-skeleton-card">'
+                + '    <div class="pm-skeleton pm-skeleton-image"></div>'
+                + '    <div class="text-center">'
+                + '      <div class="pm-skeleton pm-skeleton-title mx-auto"></div>'
+                + '      <div class="pm-skeleton pm-skeleton-price mx-auto"></div>'
+                + '      <div class="pm-skeleton pm-skeleton-rating mx-auto"></div>'
+                + '    </div>'
+                + '  </div>'
+                + '</div>';
+        }
+        $grid.html(html);
+        $grid.css({ opacity: 1, transform: 'translateY(0)', transition: 'none' });
     }
 
     function renderPagination(current, total) {
