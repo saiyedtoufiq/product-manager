@@ -55,6 +55,13 @@ jQuery(function($) {
         fetchProducts();
     });
 
+    $('#search-form').submit(function (e) { 
+        e.preventDefault();
+        state.paged = 1;
+        state.keyword = $('#search-input').val();
+        fetchProducts();
+    });
+
     // Rating bar selection
     $(".rating-container").on("click", function() {
         $(".rating-container").removeClass("active");
