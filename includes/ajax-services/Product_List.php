@@ -101,4 +101,21 @@ class Product_List {
             'total_pages' => $query->max_num_pages
         ]);
     }
+
+
+    function render_stars($rating) {
+        $full_stars = floor($rating);
+        $half_star = ($rating - $full_stars) >= 0.5 ? 1 : 0;
+        $empty_stars = 5 - $full_stars - $half_star;
+
+        $html = '<div class="pm-stars">';
+        for ($i = 0; $i < $full_stars; $i++) {
+            $html .= '<span class="star full">&#9733;</span>';
+        }
+        for ($i = 0; $i < $empty_stars; $i++) {
+            $html .= '<span class="star empty">&#9733;</span>';
+        }
+        $html .= '</div>';
+        return $html;
+    }
 }

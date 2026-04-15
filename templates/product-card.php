@@ -21,7 +21,9 @@
             </div>
         </div>
         <div class="text-center">
-            <h5 class="small fw-bold text-uppercase mb-1 lowercase"><?php the_title(); ?></h5>
+            <a class="btn btn-link" href="<?php the_permalink(); ?>">
+                <h5 class="small fw-bold text-uppercase mb-1 lowercase"><?php the_title(); ?></h5>
+            </a>
             <p class="text-muted italic small mb-2">₹<?php echo number_format($price, 2); ?></p>
             <div class="text-secondary" style="font-size: 0.6rem;">
                 <?php echo str_repeat('★', $rating) . str_repeat('☆', 5 - $rating); ?>

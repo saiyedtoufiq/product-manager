@@ -193,11 +193,6 @@
     letter-spacing: 0.1em;
 }
 
-#toast.show {
-    visibility: visible;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
-}
-
 @keyframes fadein {
     from {
         bottom: 0;
@@ -327,4 +322,115 @@
 
 .remove-btn:hover {
     color: #000;
+}
+
+
+/* Product Detail Page */
+.product-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+.product-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.product-meta {
+    font-size: 0.75rem;
+    margin-bottom: 2rem;
+    color: #444;
+    line-height: 1.8;
+}
+
+/* Purchase Controls */
+.qty-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #000;
+    width: fit-content;
+    margin-bottom: 2rem;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+}
+
+.qty-val {
+    padding: 0.5rem 1rem;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    min-width: 50px;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.btn-add-main {
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    width: 100%;
+    border-radius: 0;
+    transition: background 0.3s;
+}
+
+.btn-add-main:hover {
+    background: #333;
+}
+
+/* Tabs */
+.nav-tabs {
+    border-bottom: 1px solid #000;
+    margin-top: 4rem;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    color: #999;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1rem 2rem;
+}
+
+.nav-tabs .nav-link.active {
+    color: #000;
+    background: none;
+    border-bottom: 2px solid #000;
+}
+
+.tab-content {
+    padding: 2rem 0;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: #666;
+}
+
+/* Single product header alignment fix */
+body.single-product .wp-site-blocks > .wp-block-template-part:first-of-type .alignwide.is-content-justification-space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+body.single-product .wp-site-blocks > .wp-block-template-part:first-of-type .wp-block-group.is-content-justification-left {
+    margin-left: auto;
+}
+
+body.single-product .wp-site-blocks > .wp-block-template-part:first-of-type .wp-block-navigation {
+    justify-content: flex-end;
 }
