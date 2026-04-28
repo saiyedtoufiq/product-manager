@@ -80,7 +80,7 @@ jQuery(function($) {
             success: function(response) {
                 if (response.success) {
                     updateDrawerUI(response.data);
-                    openDrawer();
+                    // openDrawer();
                     Toast.fire({ icon: 'success', title: response.data.message });
                 } else {
                     Toast.fire({ icon: 'error', title: response.data.message || 'Unable to add product.' });
